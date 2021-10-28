@@ -48,4 +48,17 @@ Followiing things includes in this role:
 
 ## Example Playbook
 
-**IMPORTANT:** Since the `master` branch used in `source` varies based on new modifications, we suggest that you use the release versions [here](https://github.com/clouddrove/ansible-role-certbot/releases).
+```yaml
+- hosts: localhost
+  remote_user: root
+  roles:
+    - ansible_certbot.yml
+```
+
+## Variables
+
+```yaml
+  web_server: nginx
+  certbot_email: smakinen@cisco.com
+  domain_name: cloud-jen.cisco.com, www.cloud-jen.cisco.com
+```
