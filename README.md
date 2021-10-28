@@ -21,3 +21,31 @@
 </a>
 </p>
 <p align="center">
+
+
+
+## Prerequisites
+
+This module has a few dependencies:
+
+- [Ansible2.8](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
+- [Python](https://www.python.org/downloads)
+
+
+
+
+## What Includes
+
+Followiing things includes in this role:
+
+- certbot
+
+
+
+
+
+
+
+## Example Playbook
+
+**IMPORTANT:** Since the `master` branch used in `source` varies based on new modifications, we suggest that you use the release versions [here](https://github.com/clouddrove/ansible-role-certbot/releases).
