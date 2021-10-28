@@ -1,0 +1,5 @@
+---
+
+nginx_package: nginx
+nginx_service: nginx
+nginx_config_dir: /etc/nginx/conf.d

@@ -1,0 +1,73 @@
+---
+- hosts: all 
+  vars_files:
+    - host_vars/host1.yml
+
+  tasks:
+  
+  - include: el.yml
+    when: ansible_os_family == 'RedHat'
+    
+  - include: debian.yml
+    when: ansible_os_family == 'Debian'
+
+  - name: create certbot user
+    user: name=certbot
+   
+
+  - name: create certbot directory
+    file: path=/opt/certbot state=directory owner=certbot group=certbot mode=0700
+    
+  - name: create ssl directory
+    file: path=/opt/certbot/ssl state=directory owner=certbot group=certbot mode=0700
+    
+
+  - name: create certbot venv
+    shell: virtualenv /opt/certbot/venv creates=/opt/certbot/venv
+    
+
+  - name: update certbot venv
+    shell: . /opt/certbot/venv/bin/activate; pip install --upgrade pip setuptools
+    
+
+  - name: install certbot
+    shell: . /opt/certbot/venv/bin/activate; pip install --upgrade certbot creates=/opt/certbot/venv/bin/certbot
+   
+
+  - name: install certbot-nginx
+    shell: . /opt/certbot/venv/bin/activate; pip install certbot-nginx
+    tags: nginx
+  
+  - name: "Create required directories in /etc/certbot on remote source"
+    file:
+      dest : "/etc/certbot"
+      state: directory
+      owner: root
+      group: root
+      mode: u=rwx,g=x,o=x
+    tags: certbot
+
+  - name: Copy ACME Keys
+    become: true
+    copy:
+      dest: "{{ certbot_dir }}"
+      src: "{{ certbot_keys_local }}"
+      owner: root
+      group: root
+      mode: 0644
+    tags: certbot
+
+  - name: Create and Install Cert Using {{ certbot_plugin }} Plugin
+    command: certbot certonly --server {{ acme_directory }} --cert-name {{ host_domain }} --{{certbot_plugin_nginx }} --redirect -d {{ host_domain }} --preferred-challenges {{ acme_challenge_type }} --email {{ certbot_mail_address }} --config-dir=. --work-dir=. --logs-dir=. --agree-tos -n
+    args:
+      chdir: "{{ certbot_keys_remote }}"
+    tags: certbot-1-2
+    register: cert
+
+  - debug: 
+      var: cert
+    tags: certbot-1-2
+
+  - name: Nginx Restart
+    notify: Reload NGINX
+  

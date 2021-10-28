@@ -1,0 +1,9 @@
+---
+- name: Get certbot certs
+  hosts: nginx
+  gather_facts: false
+  vars_files:
+    - /repos/certbot/vars/common_vars.yml
+  roles:
+    - certbot_role
+  
