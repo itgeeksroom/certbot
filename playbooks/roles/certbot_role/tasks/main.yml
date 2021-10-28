@@ -1,0 +1,81 @@
+---
+
+# - include: el.yml
+#   when: ansible_os_family == 'RedHat'
+
+- name: create certbot user
+  user: name=certbot
+
+- name: create certbot directory
+  file: path=/opt/certbot state=directory owner=certbot group=certbot mode=0700
+  
+- name: create certbot venv
+  shell: virtualenv /opt/certbot/venv creates=/opt/certbot/venv
+  
+- name: update certbot venv
+  shell: . /opt/certbot/venv/bin/activate; pip install --upgrade pip setuptools
+  
+- name: install certbot
+  shell: . /opt/certbot/venv/bin/activate; pip install --upgrade certbot creates=/opt/certbot/venv/bin/certbot
+
+- name: install certbot-nginx
+  shell: . /opt/certbot/venv/bin/activate; pip install certbot-nginx
+  tags: nginx
+
+- name: "Create required directories in /etc/certbot on remote source"
+  file:
+    dest: "/etc/certbot"
+    state: directory
+    owner: root
+    group: root
+    mode: u=rwx,g=x,o=x
+  tags: certbot
+
+- name: check if certbot key folder exists.
+  stat:
+    path: /etc/certbot/certbot2-public
+  register: certbot_folder
+
+- name: Report certbot folder exists
+  debug: 
+    msg: "Folder exists"
+  when: certbot_folder.stat.exists
+
+
+- name: Copy ACME Keys
+  become: true
+  copy:
+    dest: "{{ certbot_dir }}"
+    src: "{{ certbot_keys_local }}"
+    owner: root
+    group: root
+    mode: 0644
+  when: not certbot_folder.stat.exists
+
+- name: Check if keys exists
+  stat:
+    path: /etc/certbot/certbot2-public/live/cloud-jen.cisco.com-0002/fullchain.pem
+  register: certbot_keys
+
+- name: Report certbot keys exists
+  debug: 
+    msg: "keys exists"
+  when: certbot_keys.stat.exists
+
+- name: Create and Install Cert Using {{ certbot_plugin }} Plugin
+  command: "{{certbot_create_command }}"
+  args:
+    chdir: "{{ certbot_keys_remote }}"
+  when: not certbot_keys.stat.exists
+  register: cert
+  
+
+- debug: 
+    var: cert
+
+
+  
+
+
+
+  

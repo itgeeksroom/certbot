@@ -1,0 +1,15 @@
+---
+
+- name: install dependencies (Debian/Ubuntu)
+  apt: pkg={{item}} state=latest
+  with_items:
+    - python-virtualenv
+    - python
+    - python-dev
+    - gcc
+    - dialog
+    - libssl-dev
+    - libffi-dev
+    - ca-certificates
+    - libaugeas0
+    - augeas-lenses

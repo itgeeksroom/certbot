@@ -1,0 +1,9 @@
+---
+- name: Get certbot certs
+  hosts: nginx
+  gather_facts: false
+  vars_files:
+    - /Users/smakinen/repos/certbot/playbooks/roles/certbot_role/defaults/main.yml
+  roles:
+    - certbot_role
+  
