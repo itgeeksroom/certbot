@@ -16,12 +16,11 @@
 <a href="https://www.ansible.com">
   <img src="https://img.shields.io/badge/Ansible-2.8-green?style=flat&logo=ansible" alt="Ansible">
 </a>
-<a href="https://www.centos.org/">
-  <img src="https://img.shields.io/badge/centos-7.x-orange" alt="Distribution">
+<a href="https://www.redhat.com/en">
+  <img src="https://img.shields.io/badge/redhat-7.x-orange" alt="Distribution">
 </a>
 </p>
 <p align="center">
-
 
 
 ## Prerequisites
