@@ -1,8 +1,0 @@
-[nginx]
-cloud-jen.cisco.com
-
-[webservers]
-cloud-runner.cisco.com
-
-[all:vars]
-ansible_user=root

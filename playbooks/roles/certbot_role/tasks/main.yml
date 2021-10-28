@@ -9,20 +9,14 @@
 - name: create certbot directory
   file: path=/opt/certbot state=directory owner=certbot group=certbot mode=0700
   
-- name: create ssl directory
-  file: path=/opt/certbot/ssl state=directory owner=certbot group=certbot mode=0700
-  
 - name: create certbot venv
   shell: virtualenv /opt/certbot/venv creates=/opt/certbot/venv
   
-
 - name: update certbot venv
   shell: . /opt/certbot/venv/bin/activate; pip install --upgrade pip setuptools
   
-
 - name: install certbot
   shell: . /opt/certbot/venv/bin/activate; pip install --upgrade certbot creates=/opt/certbot/venv/bin/certbot
-
 
 - name: install certbot-nginx
   shell: . /opt/certbot/venv/bin/activate; pip install certbot-nginx
