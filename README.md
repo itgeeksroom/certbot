@@ -77,6 +77,9 @@ Tested with the following:
   host_domain: cloud-jen.cisco.com, www.cloud-jen.cisco.com
   acme_challenge_type: http
   certbot_dir: /tmp/certbot2-public
+  certbot_cert_command: certbot certonly --server {{ acme_directory }} --cert-name {{ host_domain }} --{{certbot_plugin_nginx }} /
+  --redirect -d {{ host_domain }} --preferred-challenges {{ acme_challenge_type }} --email {{ certbot_mail_address }} /
+  --config-dir=. --work-dir=. --logs-dir=. --agree-tos -n
 
 
 ### Example Playbook
@@ -84,6 +87,17 @@ Tested with the following:
 ansible-playbook certbot_install.yml -i inventory
 
 ### certbot command
+
+- name: Check if certificate already exists.
+  stat:
+    path: /etc/certbot/certbot2-public/live/{{ cert_item.domains | first | replace('*.', '') }}/cert.pem
+  register: letsencrypt_cert
+
+- name: Generate new certificate if one doesn't exist.
+  command: "{{ certbot_create_command }}"
+  when: not letsencrypt_cert.stat.exists
+
+  
 
 
 
