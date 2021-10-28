@@ -39,10 +39,10 @@ Followiing things includes in this role:
 ## Example Playbook
 
 ```yaml
-- hosts: localhost
+- hosts: nginx
   remote_user: root
   roles:
-    - ansible_certbot.yml
+    - ansible_certbot.
 ```
 
 #### Cerbot client location and version
@@ -53,12 +53,12 @@ Followiing things includes in this role:
 
 * A list of services to be stopped before and (re-)started after obtaining a new certificate can be configured using the variable `letsencrypt_pause_services`.
 * `certonly` mode is used, which means no automatic web server installation
-* After cert issuing, you can find it in `/etc/certbot2-public/live/<domainname>`
+* After cert issuing, you can find it in `/etc/certbot/certbot2-public/live/<domainname>`
    
        ```
-       SSLCertificateFile /tmp/certbot2-public/live/{{ host_domain }}/cert.pem
-       SSLCertificateKeyFile /tmp/certbot2-public/live/{{ host_domain }}/privkey.pem
-       SSLCertificateChainFile /tmp/certbot2-public/live/{{ host_domain }}/chain.pem
+       SSLCertificateFile /etc/certbot/certbot2-public/live/{{ host_domain }}/cert.pem
+       SSLCertificateKeyFile /etc/certbot/certbot2-public/live/{{ host_domain }}/privkey.pem
+       SSLCertificateChainFile /etc/certbot/certbot2-public/live/{{ host_domain }}/chain.pem
        ```
 
 ### Requirements
@@ -81,7 +81,7 @@ Tested with the following:
 
 ### Example Playbook
 
-ansible-playbook ansible-certbot.yml -i inventory
+ansible-playbook certbot_install.yml -i inventory
 
 ### certbot command
 
