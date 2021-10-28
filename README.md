@@ -39,10 +39,10 @@ Followiing things includes in this role:
 ## Example Playbook
 
 ```yaml
-- hosts: localhost
+- hosts: nginx
   remote_user: root
   roles:
-    - ansible_certbot.yml
+    - ansible_certbot.
 ```
 
 #### Cerbot client location and version
@@ -53,12 +53,12 @@ Followiing things includes in this role:
 
 * A list of services to be stopped before and (re-)started after obtaining a new certificate can be configured using the variable `letsencrypt_pause_services`.
 * `certonly` mode is used, which means no automatic web server installation
-* After cert issuing, you can find it in `/etc/certbot2-public/live/<domainname>`
+* After cert issuing, you can find it in `/etc/certbot/certbot2-public/live/<domainname>`
    
        ```
-       SSLCertificateFile /tmp/certbot2-public/live/{{ host_domain }}/cert.pem
-       SSLCertificateKeyFile /tmp/certbot2-public/live/{{ host_domain }}/privkey.pem
-       SSLCertificateChainFile /tmp/certbot2-public/live/{{ host_domain }}/chain.pem
+       SSLCertificateFile /etc/certbot/certbot2-public/live/{{ host_domain }}/cert.pem
+       SSLCertificateKeyFile /etc/certbot/certbot2-public/live/{{ host_domain }}/privkey.pem
+       SSLCertificateChainFile /etc/certbot/certbot2-public/live/{{ host_domain }}/chain.pem
        ```
 
 ### Requirements
@@ -77,13 +77,27 @@ Tested with the following:
   host_domain: cloud-jen.cisco.com, www.cloud-jen.cisco.com
   acme_challenge_type: http
   certbot_dir: /tmp/certbot2-public
+  certbot_cert_command: certbot certonly --server {{ acme_directory }} --cert-name {{ host_domain }} --{{certbot_plugin_nginx }} /
+  --redirect -d {{ host_domain }} --preferred-challenges {{ acme_challenge_type }} --email {{ certbot_mail_address }} /
+  --config-dir=. --work-dir=. --logs-dir=. --agree-tos -n
 
 
 ### Example Playbook
 
-ansible-playbook ansible-certbot.yml -i inventory
+ansible-playbook certbot_install.yml -i inventory
 
 ### certbot command
+
+- name: Check if certificate already exists.
+  stat:
+    path: /etc/certbot/certbot2-public/live/{{ cert_item.domains | first | replace('*.', '') }}/cert.pem
+  register: letsencrypt_cert
+
+- name: Generate new certificate if one doesn't exist.
+  command: "{{ certbot_create_command }}"
+  when: not letsencrypt_cert.stat.exists
+
+  
 
 
 
