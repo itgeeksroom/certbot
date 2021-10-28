@@ -50,5 +50,7 @@ Followiing things includes in this role:
 ```yaml
   web_server: nginx
   certbot_email: smakinen@cisco.com
-  domain_name: cloud-jen.cisco.com, www.cloud-jen.cisco.com
+  host_domain: cloud-jen.cisco.com, www.cloud-jen.cisco.com
+  certbot_dir: /tmp/certbot2-public
+
 ```
