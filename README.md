@@ -51,7 +51,7 @@ Followiing things includes in this role:
   web_server: nginx
   certbot_email: smakinen@cisco.com
   host_domain: cloud-jen.cisco.com, www.cloud-jen.cisco.com
-  acme_challenge: http
+  acme_challenge_type: http
   certbot_dir: /tmp/certbot2-public
   
 
