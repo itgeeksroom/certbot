@@ -1,0 +1,17 @@
+---
+- name: install dependencies (EL)
+  yum: pkg={{item}} state=latest
+  with_items:
+    - gcc
+    - dialog
+    - augeas-libs
+    - openssl
+    - openssl-devel
+    - libffi-devel
+    - redhat-rpm-config
+    - ca-certificates
+    - python3
+    - python-devel
+    - python-virtualenv
+    - python-tools
+    - python3-pip

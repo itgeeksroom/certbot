@@ -1,0 +1,10 @@
+---
+- name: Check if acme exists..
+  stat:
+    path: /etc/certbot/certbot2-public/accounts
+  register: certbot_keys
+
+- name: Generate new acme keys
+  command: "{{ certbot_keys_copy_command }}"
+  when: not certbot_keys.stat.exists
+
