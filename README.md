@@ -26,25 +26,16 @@
 
 ## Prerequisites
 
-This module has a few dependencies:
+This module has a few dependencies: https://certbot.eff.org/lets-encrypt/pip-nginx
 
 - [Ansible2.8](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
-- [Python](https://www.python.org/downloads)
-
-
-
+- [Python3](https://www.python.org/downloads)
 
 ## What Includes
 
 Followiing things includes in this role:
 
 - certbot
-
-
-
-
-
-
 
 ## Example Playbook
 
